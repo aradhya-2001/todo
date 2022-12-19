@@ -1,14 +1,29 @@
 //jshint esversion:6
 const exp = require("express");
 const bp = require("body-parser");
+const mongoose = require("mongoose");
 const app = exp();
+
+const url = "mongodb://localhost:27017/itemsDb";
+mongoose.connect(url, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("db created");
+  }
+});
+const uSchema = new mongoose.Schema({
+  name: String,
+});
+const hModel = mongoose.model("home", uSchema);
+const wModel = mongoose.model("work", uSchema);
 
 app.use(bp.urlencoded({ extended: true }));
 app.use(exp.static("public"));
 app.set("view engine", "ejs");
 
-var items = ["eat", "netflix", "sleep"];
-var workItems = [];
+var hm_items = [];
+var wrk_items = [];
 
 app.get("/", (req, res) => {
   var options = {
@@ -19,8 +34,23 @@ app.get("/", (req, res) => {
   var today = new Date();
   const day = today.toLocaleDateString("en-US", options);
 
-  res.render("list", { title: day, newI: items});
-  //coz of this newI is also array and newI = items i.e contents of newI same of items
+  hModel.find({}, (err, i) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("list", { title: day, items: i });
+    }
+  });
+});
+
+app.get("/2", (req, res) => {
+  wModel.find({}, (err, i) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("list", { title: "Work List", items: i });
+    }
+  });
 });
 
 app.post("/", (req, res) => {
@@ -28,16 +58,19 @@ app.post("/", (req, res) => {
   let ni = req.body.newItem;
   if (req.body.btnName === "Work") {
     /* if we write ==="Work List", then will not wrork as it is matched until a whitespace is encountered so if date is wednesday, aug 17 then req.body.btnName=wednesday, */
-    workItems.push(ni);
+    let wrk_l = new wModel({
+      name: ni,
+    });
+    wrk_l.save();
+
     res.redirect("/2");
   } else {
-    items.push(ni);
+    let hm_l = new hModel({
+      name: ni,
+    });
+    hm_l.save();
     res.redirect("/");
   }
-});
-
-app.get("/2", (req, res) => {
-  res.render("list", { title: "Work List", newI: workItems });
 });
 
 app.get("/about", (req, res) => {

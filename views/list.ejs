@@ -2,19 +2,18 @@
 
     <div class="titles">
       <h1><%=title%></h1>
-    </div>
+    </div> 
     
 
     <div class="box">
-      <% for( let i = 0; i < newI.length; i++ ) { %>
-      <div class="item">
-        <input type="checkbox" />
-        <p><%= newI[i] %></p>
-        <!-- suppose there are 3 items on list so len of items=3 and len of newI is also 3. So on entering new item ,its pushes into var items then flow goes to app.get() then on render which first puts all values of items into newI then ejs file is reached then for loop where i=0 and len of newI = 4. So loop runs for 4 times creating li from starting (top list item) to last(bottom one) so every time an item is entered,<ul> is created from start  -->
-      </div>
 
-      <% } %>
-
+    <%  items.forEach(i=>{        %>
+        <div class="item">
+          <input type="checkbox">
+          <p> <%= i.name %>  </p> 
+        </div>
+    <%  })                        %>
+    
       <form action="/" class="item" method="post">
         <input
           type="text"
