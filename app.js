@@ -2,7 +2,12 @@
 const exp = require("express");
 const bp = require("body-parser");
 const mongoose = require("mongoose");
+mongoose.set('strictQuery', true);
 const app = exp();
+
+app.use(bp.urlencoded({ extended: true }));
+app.use(exp.static("public"));
+app.set("view engine", "ejs");
 
 const url = "mongodb://localhost:27017/itemsDb";
 mongoose.connect(url, (err) => {
@@ -18,13 +23,6 @@ const uSchema = new mongoose.Schema({
 const hModel = mongoose.model("home", uSchema);
 const wModel = mongoose.model("work", uSchema);
 
-app.use(bp.urlencoded({ extended: true }));
-app.use(exp.static("public"));
-app.set("view engine", "ejs");
-
-var hm_items = [];
-var wrk_items = [];
-
 app.get("/", (req, res) => {
   var options = {
     month: "short",
@@ -38,7 +36,7 @@ app.get("/", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.render("list", { title: day, items: i });
+      res.render("list", { title: day, items: i }); /* on visiting the home pg, each time full document of our db is sent to list.ejs intead of an array  */
     }
   });
 });
@@ -72,6 +70,20 @@ app.post("/", (req, res) => {
     res.redirect("/");
   }
 });
+
+app.post("/delete",(req,res)=>{
+  let cond=req.body
+  console.log(cond)
+  if(cond){
+    hModel.deleteOne({id:cond.check},(err)=>{
+      if(err){
+        console.log(err)
+      }else{
+        console.log("deleted")
+      }
+    })
+  }
+})
 
 app.get("/about", (req, res) => {
   res.render("about");
