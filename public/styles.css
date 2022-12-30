@@ -4,7 +4,6 @@ html {
   min-height: 1000px;
   font-family: "helvetica neue";
 }
-
 h1,
 a {
   color: #fff;
@@ -15,7 +14,6 @@ a {
   font-size: 2rem;
   font-weight: bold;
 }
-
 a:link,
 a:visited,
 a:hover,
@@ -28,7 +26,6 @@ a:active {
   border-radius: 5px;
   box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
 }
-
 .box {
   width: 400px;
   margin: 50px auto;
@@ -36,29 +33,24 @@ a:active {
   border-radius: 5px;
   box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
 }
-
 .item {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #f1f1f1;
 }
-
 .item:last-child {
   border-bottom: 0;
   /* makes the border of the form input(last child of the .item)0 */
 }
-
 input:checked + p {
   /* selects all p's that comes after input(in checked state) and apply line-through to all p's. Here we are selecting all p coz when we check multiple boxes all p should be line-through*/
   text-decoration: line-through;
   text-decoration-color: #a683e3;
 }
-
 input[type="checkbox"] {
   /* there are 2 input in our page.To select only checkbox input, this style is used */
   margin-left: 20px;
 }
-
 p {
   margin: 0;
   padding: 20px;
@@ -66,12 +58,10 @@ p {
   font-weight: 200;
   color: #00204a;
 }
-
 form.item {
   text-align: center;
   margin-left: 20px;
 }
-
 button {
   height: 50px;
   width: 50px;
@@ -83,7 +73,6 @@ button {
   border-width: 0;
   /* default value of border is something and its in black color */
 }
-
 input[type="text"] {
   text-align: center;
   height: 60px;
@@ -95,19 +84,16 @@ input[type="text"] {
   font-weight: 200;
   width: 313px;
 }
-
 input[type="text"]:focus {
   outline: none;
   /*   default css of input when its focussed is an black thick outline(border) appears on all it sides */
   box-shadow: inset 0 -3px 0 0 #a683e3;
   /* inset | offset-x | offset-y | blur-radius | spread-radius | color */
 }
-
 ::placeholder {
   color: grey;
   opacity: 1;
 }
-
 footer {
   /* color: white; */
   color: rgba(0, 0, 0, 0.5);

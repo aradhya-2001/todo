@@ -7,34 +7,34 @@
 
     <div class="box">
 
-      <form action="/delete" method="post">
-        <%  items.forEach(i=>{                        %>
-          <div class="item">
-            <input name="check" value="<%= i.id %> " onchange="this.form.submit()" type="checkbox" >   <!-- Each items in our document is being iterated. We can write 2 <p> tags inside our div. 1st <p> can have print the id each item of collection and 2nd <p> can show the item.name. Here instead of printing the 1st <p> i.e id, we are assigning the id to each check box -->
-            <p><%= i.name %></p> 
-          </div>        
-        <%  })                                        %>
+      <form action="/delete" method="post">    <!-- to collect the data from an element in web pg, enclose that element in a form with post meathod and create a new route. The data is only posted or sent when there is a submit button. Job of a submit button is to make the post request of the data inside the form to mentioned route -->
+        <%    items.forEach(i=>{                                                                        %>
+            <div class="item">
+        <%            if(i.name!="default"){                                                            %>
+                <input name="check" value="<%= i.id %> " onchange="this.form.submit()" type="checkbox" >   <!-- Each items in our document is being iterated. We can write 2 <p> tags inside our div. 1st <p> can have print the id each item of collection and 2nd <p> can show the item.name. Here instead of printing the 1st <p> i.e id, we are assigning the id to each check box -->
+                  <p><%= i.name %></p> 
+        <%            }                                                                                 %>
+            </div>        
+        <%    })                                                                                        %>
       </form>
         
     
       <form  action="/" class="item" method="post">
         <input
           type="text"
-          name="newItem"
+          name="new_item"
           id="newItem"
           placeholder="New Item"
           autocomplete="off"
         />
-        <button type="submit" name="btnName" value=<%=title%>>+</button>
+        <button type="submit" name="btn_name" value=<%=title%>>+</button>
+      </form>
     </div>
-
     
+   
+
     <div class="titles">
-      <% if(title ==="Work List") {%> 
-      <a href="/">Normal List </a>
-      <% }else {%>
-        <a href="/2">Work List</a>
-        <% } %> 
+      <a  href="/">Home Page</a>
     </div>
      
 <%- include("footer") -%>    
