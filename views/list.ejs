@@ -4,18 +4,16 @@
       <h1><%=title%></h1>
     </div> 
     
-
     <div class="box">
 
       <form action="/delete" method="post">    <!-- to collect the data from an element in web pg, enclose that element in a form with post meathod and create a new route. The data is only posted or sent when there is a submit button. Job of a submit button is to make the post request of the data inside the form to mentioned route -->
-        <%    items.forEach(i=>{                                                                        %>
-            <div class="item">
-        <%            if(i.name!="default"){                                                            %>
-                <input name="check" value="<%= i.id %> " onchange="this.form.submit()" type="checkbox" >   <!-- Each items in our document is being iterated. We can write 2 <p> tags inside our div. 1st <p> can have print the id each item of collection and 2nd <p> can show the item.name. Here instead of printing the 1st <p> i.e id, we are assigning the id to each check box -->
-                  <p><%= i.name %></p> 
-        <%            }                                                                                 %>
+        <%    route_doc.names_ar.forEach(i=>{              %>
+              <div class="item">
+              <input name="check" value="<%=i.id%>" onchange="this.form.submit()" type="checkbox" >   <!-- Each items in our document is being iterated. We can write 2 <p> tags inside our div. 1st <p> can have print the id each item of collection and 2nd <p> can show the item.name. Here instead of printing the 1st <p> i.e id, we are assigning the id to each check box -->
+              <p><%=i.namea%></p>
             </div>        
-        <%    })                                                                                        %>
+        <%    })                              %>
+        <input type="hidden" name="hidden_btn" value="<%= title %>"> <!-- if this line is written inside the forEach loop then ->if our url "abc" has 2 items ["abc1", "abc2"] then hidden_btn gives [abc, abc] i.e instead of giving single gives an array and check as "abc1 " i.e gives a space at last. After writing it outside loop, it gives {check: 'abc1', hidden_btn: "abc"} -->
       </form>
         
     
