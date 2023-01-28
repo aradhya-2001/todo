@@ -80,7 +80,7 @@ app.get("/:topic",(req,res)=>{
 
 app.post("/", (req, res) => {   /*after pressing + , console.log(req.body) will give {new_item:'text entered' ,btn_name:'value of btn'} therefore req.body.btn_name will give value stored in button i.e the name of the title */
   
-let ni = req.body.new_item;
+  let ni = req.body.new_item;
   let title =req.body.btn_name  /* when we post from home pg having title like "Friday, Dec 30" i.e "Friday,". Therefore console.log(title) will print only "Friday,". */
   let name_doc=new items_model({
     name:ni,
@@ -124,7 +124,11 @@ app.post("/delete",(req,res)=>{
     }
   })
  }
- res.redirect("/"+title)
+ if(title==curr_date){  /* if we simply redirect to "/"+title then instead of going to our pg "Sunday, Jan 29" it goes to "Sunday, jan 29" (with small 'j') where the array is 0 */
+  res.redirect("/")
+ }else{
+  res.redirect("/"+title)
+ } 
 })
 
 app.get("/about", (req, res) => {
