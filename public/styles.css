@@ -20,11 +20,20 @@ a:hover,
 a:active {
   text-decoration: none;
 }
-.titles {
+.title_h1 {
   width: 400px;
   margin: 50px auto;
   border-radius: 5px;
   box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+}
+.title_a {
+  width: 400px;
+  margin: 50px auto;
+  border-radius: 5px;
+  box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+}
+.invisible{
+  display:none
 }
 .box {
   width: 400px;
@@ -94,6 +103,7 @@ input[type="text"]:focus {
   color: grey;
   opacity: 1;
 }
+
 footer {
   /* color: white; */
   color: rgba(0, 0, 0, 0.5);

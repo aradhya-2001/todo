@@ -25,7 +25,7 @@ const items_schema=new mongoose.Schema({
 
 const route_schema=new mongoose.Schema({
   route:String,
-  names_ar:[items_schema], /* we created names_ar as the array of items_schema  instead of simply creating it as  [String] or array of strings coz by this meathod each name item will be a doc having its id and we need this id to del that unique item in del route. If we made name as string array only, then if 2 names are equal then 'pull' will del every matching string so we need the unique id of every item  */
+  names_ar:[items_schema] /* we created names_ar as the array of items_schema  instead of simply creating it as  [String] or array of strings coz by this meathod each name item will be a doc having its id and we need this id to del that unique item in del route. If we made name as string array only, then if 2 names are equal then 'pull' will del every matching string so we need the unique id of every item  */
 })
 
 const items_model=mongoose.model("items",items_schema)
@@ -49,14 +49,15 @@ app.route("/")
   route_model.findOne({route:curr_date}, (err, doc) => {
     if (err) {
       console.log(err);
-    }if(!doc){
+    }
+    if(!doc){
       doc=new route_model({
         route:curr_date,
         names_ar:[],
       })
       doc.save()
     }
-    res.render("list", { title: curr_date, route_doc: doc}); /* here doc will be like {_id:" ",route:" ",names_ar:[{_id:" ",name:" "},{},{}]}. On visiting the home pg, each time full document of our db is sent to list.ejs intead of an array  */
+ res.render("list", { title: curr_date, route_doc: doc}); /* here doc will be like {_id:" ",route:" ",names_ar:[{_id:" ",name:" "},{},{}]}. On visiting the home pg, each time full document of our db is sent to list.ejs intead of an array  */
   });
 })
 .post((req, res) => {   /*after pressing + , console.log(req.body) will give {new_item:'text entered' ,btn_name:'value of btn'} therefore req.body.btn_name will give value stored in button i.e the name of the title */
@@ -117,7 +118,7 @@ app.post("/delete",(req,res)=>{
       names_ar:{_id:check}}
   }
   route_model.updateOne({route:title},update,(err)=>{   /* {_id:" ",route:" ",names_ar:[{_id:" ",name:" "},{},{}]} */
-    if(!err){
+    if(err){
       console.log(err)
     }
   })
