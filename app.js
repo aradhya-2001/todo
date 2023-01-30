@@ -43,8 +43,8 @@ function today(){
   date_space=curr_date.substring(0, curr_date.indexOf(' '));  /* curr_date="Friday, Dec 30", date_space="Friday," */
 }
 
-  
-app.get("/", (req, res) => {
+app.route("/")
+.get((req, res) => {
   today()
   route_model.findOne({route:curr_date}, (err, doc) => {
     if (err) {
@@ -58,6 +58,36 @@ app.get("/", (req, res) => {
     }
     res.render("list", { title: curr_date, route_doc: doc}); /* here doc will be like {_id:" ",route:" ",names_ar:[{_id:" ",name:" "},{},{}]}. On visiting the home pg, each time full document of our db is sent to list.ejs intead of an array  */
   });
+})
+.post((req, res) => {   /*after pressing + , console.log(req.body) will give {new_item:'text entered' ,btn_name:'value of btn'} therefore req.body.btn_name will give value stored in button i.e the name of the title */
+let ni = req.body.new_item;
+let title =req.body.btn_name  /* when we post from home pg having title like "Friday, Dec 30" i.e "Friday,". Therefore console.log(title) will print only "Friday,". */
+let name_doc=new items_model({
+  name:ni,
+})
+name_doc.save()
+
+if(title==date_space){
+  route_model.findOne({route:curr_date},(err,doc)=>{  /* remember doc is like {_id:" ",route:" ",names_ar:[{_id:" ",name:" "},{},{}]} */
+    if(!err){
+      doc.names_ar.push(name_doc)
+      doc.save()
+      res.redirect("/"); 
+    }else{
+      console.log(err)
+    }
+  })
+}else{
+  route_model.findOne({route:title},(err,doc)=>{
+    if(!err){
+      doc.names_ar.push(name_doc)
+      doc.save()
+      res.redirect("/"+title);
+    }else{
+      console.log(err)
+    }
+  })
+}
 });
 
 app.get("/:topic",(req,res)=>{
@@ -77,38 +107,6 @@ app.get("/:topic",(req,res)=>{
     }
   })
 })
-
-app.post("/", (req, res) => {   /*after pressing + , console.log(req.body) will give {new_item:'text entered' ,btn_name:'value of btn'} therefore req.body.btn_name will give value stored in button i.e the name of the title */
-  
-  let ni = req.body.new_item;
-  let title =req.body.btn_name  /* when we post from home pg having title like "Friday, Dec 30" i.e "Friday,". Therefore console.log(title) will print only "Friday,". */
-  let name_doc=new items_model({
-    name:ni,
-  })
-  name_doc.save()
-
-  if(title==date_space){
-    route_model.findOne({route:curr_date},(err,doc)=>{  /* remember doc is like {_id:" ",route:" ",names_ar:[{_id:" ",name:" "},{},{}]} */
-      if(!err){
-        doc.names_ar.push(name_doc)
-        doc.save()
-        res.redirect("/"); 
-      }else{
-        console.log(err)
-      }
-    })
-  }else{
-    route_model.findOne({route:title},(err,doc)=>{
-      if(!err){
-        doc.names_ar.push(name_doc)
-        doc.save()
-        res.redirect("/"+title);
-      }else{
-        console.log(err)
-      }
-    })
-  }
-});
 
 app.post("/delete",(req,res)=>{
   let check=req.body.check /* console.log(req.body) logs {check: '63c5a9a1a5ee1f204654f451', hidden_btn: 'Monday, Jan 9'}. If none checkboxes are clicked then it will print empty {} */
